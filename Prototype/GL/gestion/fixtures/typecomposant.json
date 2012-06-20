@@ -1,0 +1,50 @@
+[
+  {
+    "pk": 1,
+    "model": "gestion.typecomposant",
+    "fields": {
+      "description": "Produit open source ou r\u00e9sultat de composant opensource",
+      "label": "Open Source"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "gestion.typecomposant",
+    "fields": {
+      "description": "Un freeware, ou gratuiciel, est un logiciel propri\u00e9taire distribu\u00e9 gratuitement sans toutefois conf\u00e9rer \u00e0 l'utilisateur certaines libert\u00e9s d'usage1,2,note 1 associ\u00e9es au logiciel libre.",
+      "label": "Freeware"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "gestion.typecomposant",
+    "fields": {
+      "description": "Un shareware, un partagiciel, ou un logiciel \u00e0 contribution1, est un logiciel propri\u00e9taire, qui peut \u00eatre utilis\u00e9 gratuitement g\u00e9n\u00e9ralement durant une certaine p\u00e9riode ou avec des fonctionnalit\u00e9s limit\u00e9es. Apr\u00e8s cette p\u00e9riode d'essai, l'utilisateur doit r\u00e9tribuer l'auteur s'il veut continuer \u00e0 utiliser le logiciel ou avoir acc\u00e8s \u00e0 la version compl\u00e8te.",
+      "label": "Shareware"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "gestion.typecomposant",
+    "fields": {
+      "description": "Le terme Shared Source (code source partag\u00e9) vient de la Shared Source initiative1 de Microsoft. Il s'agit d'un type de licence qui donne le droit de regarder le code source et parfois d'en distribuer des versions modifi\u00e9es. Toutefois, le droit de vendre n'est pas donn\u00e9 et les licences Shared Source ne sont pas consid\u00e9r\u00e9e comme des licences de logiciel libre.",
+      "label": "Shared source"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "gestion.typecomposant",
+    "fields": {
+      "description": "a propri\u00e9t\u00e9 priv\u00e9e est le droit de propri\u00e9t\u00e9, c'est un concept aujourd'hui dans le droit commun. Il s'agit de la propri\u00e9t\u00e9 qui appartient en propre \u00e0 un individu, ou \u00e0 plusieurs personnes priv\u00e9es, ou encore, depuis le xxe si\u00e8cle, \u00e0 une entreprise ou une autre personne morale.",
+      "label": "Propri\u00e9t\u00e9 priv\u00e9"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "gestion.typecomposant",
+    "fields": {
+      "description": "Produit acquis sous licence",
+      "label": "Ach\u00e9t\u00e9"
+    }
+  }
+]

@@ -1,0 +1,119 @@
+{% load url from future %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+	lang="{{ LANGUAGE_CODE|default:"en-us" }}" 
+	xml:lang="{{ LANGUAGE_CODE|default:"en-us" }}" 
+	{% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+	<head>
+		<title>{% block title %}{% endblock %}</title>
+		<script type="text/javascript" src="{{ MEDIA_URL }}Js/jquery.js"        ></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}Js/jquery-ui.min.js" ></script>
+		<script type="text/javascript" src="{{ MEDIA_URL }}Js/jquery.jsignal.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}Css/base.css"></link>
+		<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}Css/theming.css"></link>
+		<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}Css/jquery-ui-1.8.16.custom.css"></link>
+		{% block extrastyle %}{% endblock %}
+		{% if LANGUAGE_BIDI %}
+		<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{{ MEDIA_URL }}Css/rtl.css{% endblock %}" />
+		{% endif %}
+		{% block extrahead %}{% endblock %}
+		{% block blockbots %}
+		<meta name="robots" content="NONE,NOARCHIVE" />
+		{% endblock %}
+	</head>
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+
+<!-- Container -->
+<div id="container">
+	{% if not is_popup %}
+	<!-- Header -->
+	<div id="header">
+		<div id="branding">
+		{% block branding %}{% endblock %}
+		</div>
+		{% if user.is_active and user.is_staff %}
+		<div id="user-tools">
+			{% trans 'Welcome,' %}
+			<strong>{% filter force_escape %}{% firstof user.first_name user.username %}{% endfilter %}</strong>.
+			{% block userlinks %}
+					<a href="/logout/">
+				{% trans 'Log out' %}</a>
+			{% endblock %}
+		</div>
+		{% endif %}
+		{% block nav-global %}{% endblock %}
+	</div>
+	<!-- END Header -->
+	{% block breadcrumbs %}
+	<div class="breadcrumbs">
+		<a href="/">{% trans 'Home' %}</a>
+		{% if title %} &rsaquo; {{ title }}
+		{% endif %}
+	</div>
+	{% endblock %}
+	{% endif %}
+
+		{% if messages %}
+		<ul class="messagelist">
+			{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+	<!-- Content -->
+	<div id="content" class="{% block coltype %}colM{% endblock %}">
+		{% block pretitle %}{% endblock %}
+		{% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+		{% block content %}
+		{% block object-tools %}{% endblock %}
+		{{ content }}
+		{% endblock %}
+		{% block sidebar %}{% endblock %}
+		<br class="clear" />
+	</div>
+	<!-- END Content -->
+
+	{% block footer %}<div id="footer"></div>{% endblock %}
+</div>
+<!-- END Container -->
+<!-- Jquery Ui Dialogs -->
+	<div id="dialogs">
+{% block custom_dialogs %}
+		<!-- Generic error message dialog with custom message -->
+		<div id="error_dialog" title="Error message" class="custom_dialog">
+			<p>
+				<span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+				<h2>Erreur :</h2>
+				<br/>
+				<div id="error_message"></div>
+			</p>
+		</div>
+		<!-- Generic information dialog with custom message -->
+		<div id="info_dialog" title="Information" class="custom_dialog">
+			<p>
+				<span class="ui-icon ui-icon-info" style="float:left; margin:0 7px 20px 0;"></span>
+				<h2>Information :</h2>
+				<br/>
+				<div id="information_message"></div>
+			</p>
+		</div>
+		{% block extra_custom_dialogs %}{% endblock %}
+{% endblock %}
+	</div>
+<!-- End Jquery Ui Dialogs -->
+
+<!-- Ajax action wait animation -->
+<div id="wait" align="center">
+	<div id="wait_container">
+		<img src="{{ MEDIA_URL }}Img/loader.gif">
+		<h2>Opération en cour, merci de patienter</h2>
+	</div>
+</div>
+<!-- End Ajax action wait animation -->
+
+</body>
+</html>
