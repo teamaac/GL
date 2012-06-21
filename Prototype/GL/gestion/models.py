@@ -1,25 +1,20 @@
 from django.db import models
 
-class TypeComposant(models.Model):
+class AbstractInfo(models.Model):
 	label       = models.CharField(max_length = 255, unique = True)
 	description = models.TextField()
 	def __unicode__(self):
 		return self.label
+	class Meta:
+		abstract = True
 
-class VersionLogiciel(models.Model):
-	label       = models.CharField(max_length=255, unique = True)
-	description = models.TextField()
-	def __unicode__(self):
-		return self.label
-
-class Nature(models.Model):
-	label       = models.CharField(max_length=255, unique = True)
-	description = models.TextField()
-	def __unicode__(self):
-		return self.label
+class Etat           (AbstractInfo):pass
+class Nature         (AbstractInfo):pass
+class TypeComposant  (AbstractInfo):pass
+class VersionLogiciel(AbstractInfo):pass
 
 class Licence(models.Model):
-	label    = models.CharField(max_length=255, unique = True)
+	label    = models.CharField(max_length = 255, unique = True)
 	gratuit  = models.BooleanField(default = False)
 	libre    = models.BooleanField(default = False)
 	contenu  = models.TextField()
@@ -37,10 +32,12 @@ class ComposantVersion(models.Model):
 	composant      = models.ForeignKey(Composant)
 	version        = models.ForeignKey(VersionLogiciel)
 	nature         = models.ForeignKey(Nature)
-	license        = models.ForeignKey(Licence, default=1)
+	licence        = models.ForeignKey(Licence)
 	cout           = models.FloatField(default = 0)
 	def __unicode__(self):
 		return "%s : %s" % (self.composant, self.version)
+	class Meta:
+		unique_together = ('composant', 'version',)
 
 class Client(models.Model):
 	designation  = models.CharField(max_length = 255)
@@ -49,12 +46,6 @@ class Client(models.Model):
 	address      = models.TextField()
 	def __unicode__(self):
 		return self.designation
-
-class Etat(models.Model):
-	label       = models.CharField(max_length=255)
-	description = models.TextField()
-	def __unicode__(self):
-		return self.label
 
 class Produit(models.Model):
 	titre       = models.CharField(max_length = 255, unique = True)
@@ -68,6 +59,16 @@ class ProduitVersion(models.Model):
 	version    = models.ForeignKey(VersionLogiciel)
 	client     = models.ForeignKey(Client)
 	etat       = models.ForeignKey(Etat)
-	composants = models.ManyToManyField(ComposantVersion)
+	composants = models.ManyToManyField(ComposantVersion, through = 'ProduitVersionComposantVersion')
 	def __unicode__(self):
 		return "%s : %s" % (self.produit, self.version)
+	class Meta:
+		unique_together = ('produit', 'version',)
+
+class ProduitVersionComposantVersion(models.Model):
+	produit_version   = models.ForeignKey(ProduitVersion)
+	composant_version = models.ForeignKey(ComposantVersion)
+	def __unicode__(self):
+		return "%s -> %s" % (self.produit_version, self.composant_version)
+	class Meta:
+		unique_together = ('produit_version', 'composant_version',)
