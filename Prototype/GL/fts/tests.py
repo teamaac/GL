@@ -1,8 +1,9 @@
 import time
-from selenium    import webdriver
-from django.test import LiveServerTestCase
+
+from selenium                       import webdriver
+from django.test                    import LiveServerTestCase
 from selenium.webdriver.common.keys import *
-from django.contrib.contenttypes import models as contenttypes_models
+from django.contrib.contenttypes    import models as contenttypes_models
 
 class CreationResponsableTest(LiveServerTestCase):
 	fixtures = ['user_group.json']
