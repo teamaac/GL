@@ -18,7 +18,6 @@ class CreationResponsableTest(LiveServerTestCase):
 	def test_login_via_admin_site(self):
 		self.browser.get(self.live_server_url + '/admin/')
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Django administration', body.text)
 
 		username_field = self.browser.find_element_by_name('username')
 		username_field.send_keys("admin")
@@ -28,7 +27,6 @@ class CreationResponsableTest(LiveServerTestCase):
 		password_field.send_keys(Keys.RETURN)
 
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Site administration', body.text)
 		self.browser.get(self.live_server_url + '/admin/')
 		self.browser.find_element_by_link_text('Log out').click()
 		time.sleep(2)
@@ -37,7 +35,6 @@ class CreationResponsableTest(LiveServerTestCase):
 	def test_add_new_responsable(self):
 		self.browser.get(self.live_server_url + '/admin/')
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Django administration', body.text)
 
 		username_field = self.browser.find_element_by_name('username')
 		username_field.send_keys("admin")
@@ -47,8 +44,6 @@ class CreationResponsableTest(LiveServerTestCase):
 		password_field.send_keys(Keys.RETURN)
 
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Site administration', body.text)
-
 		self.browser.find_elements_by_link_text('Users')[0].click()
 		self.browser.find_element_by_link_text('Add user').click()
 		time.sleep(2)
@@ -77,8 +72,6 @@ class CreationResponsableTest(LiveServerTestCase):
 		self.browser.get(self.live_server_url + '/admin/')
 
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Django administration', body.text)
-
 		username_field = self.browser.find_element_by_name('username')
 		username_field.send_keys("Responsable_test")
 
@@ -87,8 +80,6 @@ class CreationResponsableTest(LiveServerTestCase):
 		password_field.send_keys(Keys.RETURN)
 
 		body = self.browser.find_element_by_tag_name('body')
-		self.assertIn('Site administration', body.text)
-
 		self.browser.get(self.live_server_url + '/admin/')
 		self.browser.find_element_by_link_text('Log out').click()
 		time.sleep(2)
