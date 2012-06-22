@@ -21,16 +21,19 @@ DATABASES = {
     }
 }
 
-TIME_ZONE          = 'Africa/Tunis'
-LANGUAGE_CODE      = 'en-us'
-USE_I18N           = True
-USE_L10N           = True
-USE_TZ             = True
-MEDIA_ROOT         = os.path.join(ROOTDIR, '../media')
-MEDIA_URL          = '/media/'
-STATIC_ROOT        = os.path.join(ROOTDIR, '../static')
-STATIC_URL         = '/static/'
-ADMIN_MEDIA_PREFIX = '/static/admin/'
+TIME_ZONE                       = 'Africa/Tunis'
+LANGUAGE_CODE                   = 'en-us'
+USE_I18N                        = True
+USE_L10N                        = True
+USE_TZ                          = True
+MEDIA_ROOT                      = os.path.join(ROOTDIR, '../media')
+MEDIA_URL                       = '/media/'
+STATIC_ROOT                     = os.path.join(ROOTDIR, '../static')
+STATIC_URL                      = '/static/'
+ADMIN_MEDIA_PREFIX              = '/static/admin/'
+COVERAGE_CUSTOM_REPORTS         = True
+COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(ROOTDIR, '../tests_report')
+COVERAGE_MODULE_EXCLUDES        = ['admin',]
 
 STATICFILES_DIRS = (
 )
@@ -84,6 +87,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'gestion',
     'tdr',
+    'django_coverage',
 )
 
 LOGGING = {
