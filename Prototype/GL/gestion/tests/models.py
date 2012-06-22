@@ -1,7 +1,7 @@
 import string
 import random
-from django.db          import models
-from gestion.models     import *
+from django.db      import models
+from gestion.models import *
 
 def string_generator(size=10, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
 	return ''.join(random.choice(chars) for x in range(size))
