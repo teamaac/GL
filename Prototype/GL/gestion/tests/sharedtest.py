@@ -1,6 +1,5 @@
 from collections          import namedtuple
 from gestion.tests.models import *
-from gestion.tests.util   import string_generator
 
 class SharedTest(object):
 	def __init__(self, param=None):
