@@ -26,9 +26,9 @@ LANGUAGE_CODE = 'en-us'
 USE_I18N      = True
 USE_L10N      = True
 USE_TZ        = True
-MEDIA_ROOT    = ''
-MEDIA_URL     = ''
-STATIC_ROOT   = ''
+MEDIA_ROOT    = os.path.join(ROOTDIR, '../media')
+MEDIA_URL     = '/media/'
+STATIC_ROOT   = os.path.join(ROOTDIR, '../static')
 STATIC_URL    = '/static/'
 
 STATICFILES_DIRS = (
@@ -44,6 +44,14 @@ SECRET_KEY = 'x!!gbc7=bcjj486w*nud(qzezaw18!q1i@%x#kw-p!777qa@_v'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.request',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,6 +70,10 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -70,7 +82,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'south',
     'gestion',
-    'fts',
+    'tdr',
 )
 
 LOGGING = {
