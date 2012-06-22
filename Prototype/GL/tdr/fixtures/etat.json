@@ -1,0 +1,50 @@
+[
+  {
+    "pk": 1,
+    "model": "gestion.etat",
+    "fields": {
+      "description": "Analyse de faisabilit\u00e9",
+      "label": "Analyse"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "gestion.etat",
+    "fields": {
+      "description": "Analyse et conception de r\u00e9alisation",
+      "label": "Conception"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "gestion.etat",
+    "fields": {
+      "description": "D\u00e9veloppement et test",
+      "label": "D\u00e9veloppement"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "gestion.etat",
+    "fields": {
+      "description": "En pause pour diverses raison",
+      "label": "Suspendu"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "gestion.etat",
+    "fields": {
+      "description": "Maintenance pr\u00e9ventive et/ou corrective",
+      "label": "Maintenace"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "gestion.etat",
+    "fields": {
+      "description": "Projet annul\u00e9",
+      "label": "Annull\u00e9"
+    }
+  }
+]

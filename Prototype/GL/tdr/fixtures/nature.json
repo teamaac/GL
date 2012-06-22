@@ -1,0 +1,58 @@
+[
+  {
+    "pk": 4,
+    "model": "gestion.nature",
+    "fields": {
+      "description": "Biblioth\u00e8que de lien dynamiqye windows",
+      "label": "dll"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "gestion.nature",
+    "fields": {
+      "description": "Biblioth\u00e8que de lien static linux",
+      "label": "lib"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "gestion.nature",
+    "fields": {
+      "description": "Biblioth\u00e8que de lien dynamique linux",
+      "label": "so"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "gestion.nature",
+    "fields": {
+      "description": "Code source",
+      "label": "src"
+    }
+  },
+  {
+    "pk": 1,
+    "model": "gestion.nature",
+    "fields": {
+      "description": "Executable windows",
+      "label": "exe"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "gestion.nature",
+    "fields": {
+      "description": "Executable linux",
+      "label": "elf"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "gestion.nature",
+    "fields": {
+      "description": "Executable ind\u00e9pendant de l'architecture (script, java...)",
+      "label": "noarch"
+    }
+  }
+]
