@@ -30,6 +30,7 @@ MEDIA_ROOT    = os.path.join(ROOTDIR, '../media')
 MEDIA_URL     = '/media/'
 STATIC_ROOT   = os.path.join(ROOTDIR, '../static')
 STATIC_URL    = '/static/'
+ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_DIRS = (
 )
@@ -47,10 +48,11 @@ TEMPLATE_LOADERS = (
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
     'django.core.context_processors.request',
 )
 
@@ -80,7 +82,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
-    'south',
     'gestion',
     'tdr',
 )
