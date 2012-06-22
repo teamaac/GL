@@ -21,15 +21,15 @@ DATABASES = {
     }
 }
 
-TIME_ZONE     = 'Africa/Tunis'
-LANGUAGE_CODE = 'en-us'
-USE_I18N      = True
-USE_L10N      = True
-USE_TZ        = True
-MEDIA_ROOT    = os.path.join(ROOTDIR, '../media')
-MEDIA_URL     = '/media/'
-STATIC_ROOT   = os.path.join(ROOTDIR, '../static')
-STATIC_URL    = '/static/'
+TIME_ZONE          = 'Africa/Tunis'
+LANGUAGE_CODE      = 'en-us'
+USE_I18N           = True
+USE_L10N           = True
+USE_TZ             = True
+MEDIA_ROOT         = os.path.join(ROOTDIR, '../media')
+MEDIA_URL          = '/media/'
+STATIC_ROOT        = os.path.join(ROOTDIR, '../static')
+STATIC_URL         = '/static/'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 STATICFILES_DIRS = (
