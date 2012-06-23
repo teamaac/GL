@@ -40,10 +40,10 @@ class ComposantVersion(models.Model):
 		unique_together = ('composant', 'version',)
 
 class Client(models.Model):
-	designation  = models.CharField(max_length = 255)
-	num_compte   = models.IntegerField()
-	desscription = models.TextField()
-	address      = models.TextField()
+	designation = models.CharField(max_length = 255)
+	num_compte  = models.IntegerField()
+	description = models.TextField()
+	address     = models.TextField()
 	def __unicode__(self):
 		return self.designation
 
@@ -62,6 +62,8 @@ class ProduitVersion(models.Model):
 	composants = models.ManyToManyField(ComposantVersion, through = 'ProduitVersionComposantVersion')
 	def __unicode__(self):
 		return "%s : %s" % (self.produit, self.version)
+	def cout_nominal(self):
+		return reduce(lambda x,y: x+y ,map(lambda x: x.cout, self.composants.all()), 0)
 	class Meta:
 		unique_together = ('produit', 'version',)
 
