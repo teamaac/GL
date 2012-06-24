@@ -24,6 +24,7 @@ class Licence(models.Model):
 class Composant(models.Model):
 	titre          = models.CharField(max_length = 255, unique = True)
 	version        = models.ManyToManyField(VersionLogiciel, through = 'ComposantVersion')
+	description    = models.TextField()
 	type_composant = models.ForeignKey(TypeComposant)
 	def __unicode__(self):
 		return self.titre
