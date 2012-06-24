@@ -34,9 +34,11 @@ ADMIN_MEDIA_PREFIX              = '/static/admin/'
 COVERAGE_CUSTOM_REPORTS         = True
 COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(ROOTDIR, '../tests_report')
 COVERAGE_MODULE_EXCLUDES        = ['admin',]
+ADMIN_TOOLS_MENU                = 'gestion.menu.CustomMenu'
+ADMIN_TOOLS_INDEX_DASHBOARD     = 'gestion.dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'gestion.dashboard.CustomAppIndexDashboard'
 
-STATICFILES_DIRS = (
-)
+STATICFILES_DIRS = ()
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -85,9 +87,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'django_coverage',
+    'annoying',
     'gestion',
     'tdr',
-    'django_coverage',
 )
 
 LOGGING = {

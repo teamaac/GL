@@ -1,0 +1,34 @@
+{% extends "admin/base_site.html" %}
+
+{% block title %}Component report{% endblock %}
+
+{% block content %}
+	<div id="content-main">
+		<h1>Liste des version de composant par composant:</h1>
+		{% for composant in component_list %}
+			<h3>{{ composant.titre }}</h3>
+			<ul>
+				<li>
+					<b>Type composant :</b>{{ composant.type_composant }}
+				</li>
+				<li>
+					<b>Description : </b>{{ composant.description }}
+				</li>
+				<li>
+					<b>Versions :</b>
+					<ul>
+					{% for version in composant.composantversion_set.all %}
+						<li>Version : {{ version.version.label }}
+							<ul>
+								<li>Nature  : {{ version.nature  }}</li>
+								<li>licence : {{ version.licence }}</li>
+								<li>Cout    : {{ version.cout    }}</li>
+							</ul>
+						</li>
+					{% endfor %}
+					</ul>
+				</li>
+			</ul>
+		{% endfor %}
+	</div>
+{% endblock %}
