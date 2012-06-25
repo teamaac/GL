@@ -1,3 +1,5 @@
+import re
+import inspect
 from collections          import namedtuple
 from gestion.tests.models import *
 
@@ -7,64 +9,53 @@ class SharedTest(object):
 		if param != None:
 			patch_model(param, patch_map[param])
 
-	def create_and_save_new_element(self):
-		result  = self.param().generate()
-		result.save()
-		return result
+	@staticmethod
+	def publish_test(test_template):
+		def test(self):
+			if self.setup    : self.setup()
+			test_template(self)
+			if self.teardown : self.teardown()
+		test.__name__= 'test_'+test_template.__name__
+		return test
 
-	def test_selecting_an_existing_element_from_the_database(self):
-		element_test = self.create_and_save_new_element()
-		specific_element_in_database  = self.param.objects.get(pk = element_test.pk)
-		self.assertEquals(specific_element_in_database, element_test)
+	def get_element(self, id, excepted_failure=False):
+		try : 
+			result = self.param.objects.get(pk = id)
+			if excepted_failure: self.fail("Excepted DoesNotExist exception here")
+			return result
+		except self.param.DoesNotExist: 
+			if not excepted_failure : self.fail("Not Excepted DoesNotExist exception here")
 
-	def test_selecting_non_existing_element_from_the_database(self):
-		element_test = self.create_and_save_new_element()
-		all_element_in_database  = self.param.objects.all()
-		self.assertEquals(len(all_element_in_database), 1)
-		try : self.param.objects.get(pk = element_test.pk+1)
-		except self.param.DoesNotExist: return
-		self.fail("Excepted DoesNotExist exception here")
+	def setup(self):
+		self.test_element = self.param().generate()
+		self.test_element.save()
+		self.initial_element_count = len(self.param.objects.all())
 
-	def test_creating_a_new_element_and_saving_it_to_the_database(self):
-		element_test = self.create_and_save_new_element()
-		all_element_in_database  = self.param.objects.all()
-		self.assertEquals(len(all_element_in_database), 1)
-		self.assertEquals(all_element_in_database[0], element_test)
+	def teardown(self):pass
 
-	def test_updating_an_existing_element_and_saving_it_to_the_database(self):
-		element_test = self.create_and_save_new_element()
-		element_test.generate()
-		element_test.save()
+	def _tpl_selecting_an_existing_element_from_the_database(self):
+		self.assertEquals(self.get_element(self.test_element.pk), self.test_element)
 
-		all_element_in_database  = self.param.objects.all()
-		self.assertEquals(len(all_element_in_database), 1)
-		self.assertEquals(all_element_in_database[0], element_test)
+	def _tpl_selecting_non_existing_element_from_the_database(self):
+		self.get_element(self.test_element.pk + 1, True)
 
-	def test_updating_an_existing_element_and_not_saving_it_to_the_database(self):
-		element_test = self.create_and_save_new_element()
-		element_test.generate()
+	def _tpl_updating_an_existing_element_and_saving_it_to_the_database(self):
+		self.test_element.generate().save()
+		self.assertEquals(len(self.param.objects.all()), self.initial_element_count)
+		self.assertEquals(self.get_element(self.test_element.pk), self.test_element)
 
-		all_element_in_database  = self.param.objects.all()
-		self.assertEquals(len(all_element_in_database), 1)
-		self.assertNotEquals(all_element_in_database[0], element_test)
+	def _tpl_updating_an_existing_element_and_not_saving_it_to_the_database(self):
+		self.test_element.generate()
+		self.assertNotEquals(self.get_element(self.test_element.pk), self.test_element)
 
-	def test_delete_an_existing_element(self):
-		element_test = self.create_and_save_new_element()
-		all_element_in_database  = self.param.objects.all()
+	def _tpl_delete_an_existing_element(self):
+		self.param.delete(self.test_element)
+		self.assertEquals(len(self.param.objects.all()), self.initial_element_count - 1)
+		self.get_element(self.test_element.pk, True)
 
-		self.assertEquals(len(all_element_in_database), 1)
-		self.assertEquals(all_element_in_database[0], element_test)
-		self.param.delete(element_test)
-
-		all_element_in_database  = self.param.objects.all()
-		self.assertEquals(len(all_element_in_database), 0)
-
-	def test_delete_non_existing_element(self):
-		element_test = self.param().generate()
-		all_element_in_database  = self.param.objects.all()
-
-		self.assertEquals(len(all_element_in_database), 0)
+	def _tpl_delete_non_existing_element(self):
+		self.param.delete(self.test_element)
 		delete_error = False
-		try:    self.param.delete(element_test)
+		try:    self.param.delete(self.test_element)
 		except: delete_error = True
 		self.assertEquals(delete_error, True)

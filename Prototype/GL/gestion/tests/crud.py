@@ -1,3 +1,4 @@
+import re, inspect
 from django.test              import TestCase
 from gestion.tests.models     import *
 from gestion.tests.sharedtest import SharedTest
@@ -8,6 +9,9 @@ def test_case_factory(ModelClass):
 			TestCase  .__init__(self, methodName)
 			SharedTest.__init__(self, ModelClass)
 	X.__name__ = "%sTest" % (ModelClass.__name__,)
+	for i in filter(re.compile('^_tpl_.*').search, map(lambda f: f[0], inspect.getmembers(X, predicate=inspect.ismethod))):
+		test_method = SharedTest.publish_test(getattr(SharedTest, i))
+		setattr(X, test_method.__name__, test_method)
 	return X
 
 EtatTest                           = test_case_factory(Etat)
