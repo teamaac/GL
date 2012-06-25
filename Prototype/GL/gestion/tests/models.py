@@ -50,6 +50,7 @@ def client_generator(model_instance):
 
 def composant_generator(model_instance):
 	model_instance.titre          = string_generator()
+	model_instance.description    = string_generator()
 	model_instance.type_composant = abstract_info_generator(TypeComposant())
 	model_instance.type_composant.save()
 	model_instance.type_composant_id = model_instance.type_composant.pk
