@@ -3,10 +3,8 @@ from django.db import models
 class AbstractInfo(models.Model):
 	label       = models.CharField(max_length = 255, unique = True)
 	description = models.TextField()
-	def __unicode__(self):
-		return self.label
-	class Meta:
-		abstract = True
+	class Meta           : abstract = True
+	def __unicode__(self): return self.label
 
 class Etat           (AbstractInfo):pass
 class Nature         (AbstractInfo):pass
@@ -18,16 +16,14 @@ class Licence(models.Model):
 	gratuit  = models.BooleanField(default = False)
 	libre    = models.BooleanField(default = False)
 	contenu  = models.TextField()
-	def __unicode__(self):
-		return self.label
+	def __unicode__(self): return self.label
 
 class Composant(models.Model):
 	titre          = models.CharField(max_length = 255, unique = True)
-	version        = models.ManyToManyField(VersionLogiciel, through = 'ComposantVersion')
+	versions       = models.ManyToManyField(VersionLogiciel, through = 'ComposantVersion')
 	description    = models.TextField()
 	type_composant = models.ForeignKey(TypeComposant)
-	def __unicode__(self):
-		return self.titre
+	def __unicode__(self): return self.titre
 
 class ComposantVersion(models.Model):
 	composant      = models.ForeignKey(Composant)
@@ -35,25 +31,21 @@ class ComposantVersion(models.Model):
 	nature         = models.ForeignKey(Nature)
 	licence        = models.ForeignKey(Licence)
 	cout           = models.FloatField(default = 0)
-	def __unicode__(self):
-		return "%s : %s" % (self.composant, self.version)
-	class Meta:
-		unique_together = ('composant', 'version',)
+	class Meta           : unique_together = ('composant', 'version',)
+	def __unicode__(self): return "%s : %s" % (self.composant, self.version)
 
 class Client(models.Model):
 	designation = models.CharField(max_length = 255)
 	num_compte  = models.IntegerField()
 	description = models.TextField()
 	address     = models.TextField()
-	def __unicode__(self):
-		return self.designation
+	def __unicode__(self): return self.designation
 
 class Produit(models.Model):
 	titre       = models.CharField(max_length = 255, unique = True)
-	version     = models.ManyToManyField(VersionLogiciel, through = 'ProduitVersion')
+	versions    = models.ManyToManyField(VersionLogiciel, through = 'ProduitVersion')
 	description = models.TextField()
-	def __unicode__(self):
-		return self.titre
+	def __unicode__(self): return self.titre
 
 class ProduitVersion(models.Model):
 	produit    = models.ForeignKey(Produit)
@@ -61,17 +53,12 @@ class ProduitVersion(models.Model):
 	client     = models.ForeignKey(Client)
 	etat       = models.ForeignKey(Etat)
 	composants = models.ManyToManyField(ComposantVersion, through = 'ProduitVersionComposantVersion')
-	def __unicode__(self):
-		return "%s : %s" % (self.produit, self.version)
-	def cout_nominal(self):
-		return reduce(lambda x,y: x+y ,map(lambda x: x.cout, self.composants.all()), 0)
-	class Meta:
-		unique_together = ('produit', 'version',)
+	class Meta            : unique_together = ('produit', 'version',)
+	def __unicode__ (self): return "%s : %s" % (self.produit, self.version)
+	def cout_nominal(self): return reduce(lambda x,y: x+y ,map(lambda x: x.cout, self.composants.all()), 0)
 
 class ProduitVersionComposantVersion(models.Model):
 	produit_version   = models.ForeignKey(ProduitVersion)
 	composant_version = models.ForeignKey(ComposantVersion)
-	def __unicode__(self):
-		return "%s -> %s" % (self.produit_version, self.composant_version)
-	class Meta:
-		unique_together = ('produit_version', 'composant_version',)
+	class Meta            : unique_together = ('produit_version', 'composant_version',)
+	def __unicode__(self) : return "%s -> %s" % (self.produit_version, self.composant_version)
