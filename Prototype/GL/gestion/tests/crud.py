@@ -1,7 +1,7 @@
-import re, sys, gestion.models
 from inspect                  import ismethod, isclass, getmembers
 from django.test              import TestCase
 from gestion.tests.sharedtest import SharedTest
+import re, sys, gestion.models
 
 map(SharedTest.publish_test, filter(re.compile('^_tpl_.*').search, [x[0] for x in getmembers(SharedTest, ismethod)]))
 
