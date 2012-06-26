@@ -1,10 +1,18 @@
 {% extends "admin/base_site.html" %}
 
+{% block extrahead %}
+ 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+	<script src="{{ MEDIA_URL }}js/highcharts/highcharts.js" type="text/javascript"></script>
+	<script src="{{ MEDIA_URL }}js/highcharts/themes/gray.js" type="text/javascript"></script>
+	{% load chartit %}
+	{{ product_chart|load_charts:"chart_container_1" }}
+{% endblock %}
+
 {% block title %}Component report{% endblock %}
 
 {% block content %}
 	<div id="content-main">
-		<h1>Liste des version de composant par composant:</h1>
+		<h1>Liste des composants:</h1>
 		{% for composant in component_list %}
 			<h3>{{ composant.titre }}</h3>
 			<ul>
@@ -30,5 +38,8 @@
 				</li>
 			</ul>
 		{% endfor %}
+	</div>
+	<div align="center">
+		<div id='chart_container_1' style='width:70%;height:500px;clear:both;margin-top:20px'></div>
 	</div>
 {% endblock %}
