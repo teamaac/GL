@@ -1,10 +1,10 @@
-from gestion.tests.models import *
+from autofixture         import *
+from gestion.tests.tools import *
 
 class SharedTest(object):
-	def __init__(self, param=None):
-		self.param = param
-		if param != None:
-			patch_model(param, patch_map[param])
+	def __init__(self, param):
+		self.param        = param
+		self.param.__eq__ = compare
 
 	@staticmethod
 	def publish_test(test_template):
@@ -24,8 +24,8 @@ class SharedTest(object):
 			if not excepted_failure : self.fail("Not Excepted DoesNotExist exception here")
 
 	def setup(self):
-		self.test_element = self.param().generate()
-		self.test_element.save()
+		self.fixture      = AutoFixture(self.param)
+		self.test_element = self.fixture.create_one()
 		self.initial_element_count = len(self.param.objects.all())
 
 	def teardown(self): pass
@@ -37,12 +37,12 @@ class SharedTest(object):
 		self.get_element(self.test_element.pk + 1, True)
 
 	def _tpl_updating_an_existing_element_and_saving_it_to_the_database(self):
-		self.test_element.generate().save()
+		self.fixture.generate(self.test_element).save()
 		self.assertEquals(len(self.param.objects.all()), self.initial_element_count)
 		self.assertEquals(self.get_element(self.test_element.pk), self.test_element)
 
 	def _tpl_updating_an_existing_element_and_not_saving_it_to_the_database(self):
-		self.test_element.generate()
+		self.fixture.generate(self.test_element)
 		self.assertNotEquals(self.get_element(self.test_element.pk), self.test_element)
 
 	def _tpl_delete_an_existing_element(self):
