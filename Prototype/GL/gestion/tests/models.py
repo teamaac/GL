@@ -1,5 +1,4 @@
-import string
-import random
+import string, random
 from django.db      import models
 from gestion.models import *
 
@@ -42,10 +41,10 @@ def licence_generator(model_instance):
 	return model_instance
 
 def client_generator(model_instance):
-	model_instance.designation = string_generator()
-	model_instance.num_compte  = random.randint(0,10000)
-	model_instance.description = string_generator()
-	model_instance.address     = string_generator()
+	model_instance.designation   = string_generator()
+	model_instance.numero_compte = random.randint(0,10000)
+	model_instance.description   = string_generator()
+	model_instance.address       = string_generator()
 	return model_instance
 
 def composant_generator(model_instance):

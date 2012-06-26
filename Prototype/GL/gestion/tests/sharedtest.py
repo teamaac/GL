@@ -1,6 +1,3 @@
-import re
-import inspect
-from collections          import namedtuple
 from gestion.tests.models import *
 
 class SharedTest(object):
@@ -12,11 +9,11 @@ class SharedTest(object):
 	@staticmethod
 	def publish_test(test_template):
 		def test(self):
-			if self.setup    : self.setup()
-			test_template(self)
-			if self.teardown : self.teardown()
-		test.__name__= 'test_'+test_template.__name__
-		return test
+			self.setup()
+			getattr(self, test_template)()
+			self.teardown()
+		test.__name__= 'test_'+test_template
+		setattr(SharedTest, test.__name__, test)
 
 	def get_element(self, id, excepted_failure=False):
 		try : 
@@ -31,7 +28,7 @@ class SharedTest(object):
 		self.test_element.save()
 		self.initial_element_count = len(self.param.objects.all())
 
-	def teardown(self):pass
+	def teardown(self): pass
 
 	def _tpl_selecting_an_existing_element_from_the_database(self):
 		self.assertEquals(self.get_element(self.test_element.pk), self.test_element)
