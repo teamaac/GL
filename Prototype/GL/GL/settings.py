@@ -30,7 +30,7 @@ STATIC_URL                      = '/static/'
 ADMIN_MEDIA_PREFIX              = '/static/admin/'
 COVERAGE_CUSTOM_REPORTS         = True
 COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(ROOTDIR, '../tests_report')
-COVERAGE_MODULE_EXCLUDES        = ['admin',]
+COVERAGE_MODULE_EXCLUDES        = ['admin', 'api', 'views']
 ADMIN_TOOLS_MENU                = 'gestion.administration.menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD     = 'gestion.administration.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'gestion.administration.dashboard.CustomAppIndexDashboard'
@@ -84,7 +84,10 @@ INSTALLED_APPS = (
 	'django.contrib.staticfiles',
 	'django.contrib.admin',
 	'django_coverage',
+	'autofixture',
+	'tastytools',
 	'annoying',
+	'tastypie',
 	'chartit',
 	'gestion',
 	'tdr',
