@@ -19,7 +19,7 @@ DATABASES = {
 }
 
 TIME_ZONE                       = 'Africa/Tunis'
-LANGUAGE_CODE                   = 'en-us'
+LANGUAGE_CODE                   = 'fr-fr'
 USE_I18N                        = True
 USE_L10N                        = True
 USE_TZ                          = True

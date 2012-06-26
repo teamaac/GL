@@ -10,9 +10,9 @@ class CustomMenu(Menu):
 			items.Bookmarks(),
 			items.AppList(_('Applications'  ),exclude=('django.contrib.*',)),
 			items.AppList(_('Administration'),models =('django.contrib.*',)),
-			items.MenuItem(_('Reports'), children = [
-				items.MenuItem(_('Products'  ), '/admin/products/report/'  ),
-				items.MenuItem(_('Components'), '/admin/components/report/'),
+			items.MenuItem(_('Raports'), children = [
+				items.MenuItem(_('Produits'  ), '/admin/products/report/'  ),
+				items.MenuItem(_('Composants'), '/admin/components/report/'),
 			])]
 
 	def init_with_context(self, context):
