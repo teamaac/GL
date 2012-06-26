@@ -10,6 +10,9 @@ class CustomMenu(Menu):
 			items.Bookmarks(),
 			items.AppList(_('Applications'  ),exclude=('django.contrib.*',)),
 			items.AppList(_('Administration'),models =('django.contrib.*',)),
+			items.MenuItem(_('Api'), children = [
+				items.MenuItem(_('Documentation'  ), '/tastytools/doc/'  ),
+			]),
 			items.MenuItem(_('Raports'), children = [
 				items.MenuItem(_('Produits'  ), '/admin/products/report/'  ),
 				items.MenuItem(_('Composants'), '/admin/components/report/'),
