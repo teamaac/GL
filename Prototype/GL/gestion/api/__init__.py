@@ -1,1 +1,1 @@
-from gestion.api.resources import *
+import resources
