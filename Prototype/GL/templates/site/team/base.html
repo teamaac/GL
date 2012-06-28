@@ -1,0 +1,8 @@
+<li>
+	<a href="{{ MEDIA_URL }}images/{% block big_image %}{% endblock %}" class="iframe" data-id="fancybox-portfolio"><img src="{{ MEDIA_URL }}images/{% block image %}{% endblock %}" alt="#" width="225" height="250" /></a>
+	<div class="info">
+		<h3>{% block function %}{% endblock %}</h3>
+		<h2>{% block name %}{% endblock %}</h2>
+		<p>{% block description %}{% endblock %}</p>
+	</div>
+</li>
