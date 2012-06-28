@@ -1,47 +1,37 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import Select
-from selenium.common.exceptions import NoSuchElementException
-import unittest, time, re
+import re
+from django.test      import LiveServerTestCase
+from tdr.tests.common import *
 
-class CreationClient(unittest.TestCase):
-	fixtures = ['user_group.json', 'etat.json', 'licences.json', 'nature.json' ,'typecomposant.json']
-	def setUp(self):
-		self.driver = webdriver.Firefox()
-		self.driver.implicitly_wait(30)
-		self.base_url = "http://localhost:8000/"
-		self.verificationErrors = []
+class CreationClient(LiveServerTestCase):
+    def setUp(self):
+        webdriver_setup(self)
 
-	def test_creation_client(self):
-		driver = self.driver
-		driver.get(self.base_url + "admin/")
-		username_field = self.driver.find_element_by_name('username')
-		username_field.send_keys("admin")
-		password_field = self.driver.find_element_by_name('password')
-		password_field.send_keys("admin")
-		driver.find_element_by_css_selector("input[type=\"submit\"]").click()
-		driver.find_element_by_css_selector("#module_2 > div.dashboard-module-content > ul > li > a").click()
-		driver.find_element_by_link_text("Add client").click()
-		driver.find_element_by_id("id_designation").clear()
-		driver.find_element_by_id("id_designation").send_keys("client")
-		driver.find_element_by_id("id_num_compte").clear()
-		driver.find_element_by_id("id_num_compte").send_keys("001")
-		driver.find_element_by_id("id_desscription").clear()
-		driver.find_element_by_id("id_desscription").send_keys("test")
-		driver.find_element_by_id("id_address").clear()
-		driver.find_element_by_id("id_address").send_keys("test")
-		driver.find_element_by_name("_save").click()
-		# ERROR: Caught exception [ERROR: Unsupported command [isTextPresent]]
-		driver.find_element_by_link_text("Log out").click()
+    def tearDown(self):
+        generic_tear_down(self)
 
-	def is_element_present(self, how, what):
-		try: self.driver.find_element(by=how, value=what)
-		except NoSuchElementException, e: return False
-		return True
-
-	def tearDown(self):
-		self.driver.quit()
-		self.assertEqual([], self.verificationErrors)
-
-if __name__ == "__main__":
-	unittest.main()
+    def test_creation_client(self):
+        driver.get(self.base_url + "/admin/")
+        set_input(self, "id_username", "admin")
+        set_input(self, "id_password", "admin")
+        driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        driver.find_element_by_css_selector("#module_2 > div.dashboard-module-content > ul > li > a").click()
+        driver.find_element_by_link_text("Add client").click()
+        set_input(self, "id_designation" , "client 1")
+        set_input(self, "id_num_compte"  , "001"     )
+        set_input(self, "id_desscription", "test"    )
+        set_input(self, "id_address"     , "test"    )
+        driver.find_element_by_name("_save").click()
+        # ERROR: Caught exception [ERROR: Unsupported command [isTextPresent]]
+        driver.find_element_by_xpath("(//a[contains(text(),'Gestion')])[2]").click()
+        driver.find_element_by_xpath("//div[@id='module_1']/div/ul/li[11]/ul/li/a/span").click()
+        set_input(self, "id_designation" , "client 2")
+        set_input(self, "id_num_compte"  , "002"     )
+        set_input(self, "id_desscription", "test"    )
+        set_input(self, "id_address"     , "test"    )
+        driver.find_element_by_name("_save").click()
+        # ERROR: Caught exception [ERROR: Unsupported command [isTextPresent]]
+        driver.find_element_by_id("action-toggle").click()
+        Select(driver.find_element_by_name("action")).select_by_visible_text("Delete selected clients")
+        driver.find_element_by_name("index").click()
+        driver.find_element_by_css_selector("input[type=\"submit\"]").click()
+        driver.find_element_by_link_text("Log out").click()

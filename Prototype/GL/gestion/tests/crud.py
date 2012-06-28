@@ -1,15 +1,15 @@
-from inspect                  import ismethod, isclass, getmembers
+import sys
 from django.test              import TestCase
+from gestion.tools            import template_tests
+from gestion.tools            import nonabstract_models
 from gestion.tests.sharedtest import SharedTest
-import re, sys, gestion.models
 
-map(SharedTest.publish_test, filter(re.compile('^_tpl_.*').search, [x[0] for x in getmembers(SharedTest, ismethod)]))
-
-for i in getmembers(gestion.models, lambda c: isclass(c) and not c._meta.abstract):
-	class X(TestCase, SharedTest):
-		def __init__(self, methodName='runTest'):
-			TestCase  .__init__(self, methodName)
-			SharedTest.__init__(self, i[1]      )
-	X.__name__ = i[1].__name__+"Test"
-	setattr(sys.modules[globals()['__name__']], X.__name__, X)
-	X = None
+def init_shared_tests(models_module):
+    map(SharedTest.publish_test, template_tests(models_module))
+    for model in nonabstract_models(models_module):
+        class Template(TestCase, SharedTest):
+            def __init__(self, method_name='runTest'):
+                TestCase  .__init__(self, method_name)
+                SharedTest.__init__(self, model[1]   )
+        Template.__name__ = model[1].__name__+"Test"
+        setattr(sys.modules[globals()['__name__']], Template.__name__, Template)
