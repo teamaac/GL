@@ -5,9 +5,12 @@ import tastypie.resources
 import {{ models_module }}
 
 {% for resource in resources_map -%}
-class {{ resource.resource_name }}(tastypie.resources.ModelResource):
-    {% for field in resource.model_fields -%}
-    {{ field.fk_field }} = tastypie.fields.ForeignKey('gestion.api.res.$field.mapped_resource', '{{ field.fk_field }}', full=True)
+class {{ resource.resource_class }}(tastypie.resources.ModelResource):
+    {% for field in resource.fk_model_fields -%}
+    {{ field.field }} = tastypie.fields.ForeignKey('gestion.api.res.{{ field.mapped_resource }}', '{{ field.field }}', full={{ resource.full_reverse }})
+    {% endfor -%}
+    {% for field in resource.mm_model_fields -%}
+    {{ field.field }} = tastypie.fields.ToManyField('gestion.api.res.{{ field.mapped_resource }}', '{{ field.field }}', full={{ resource.full_reverse }})
     {% endfor -%}
     def determine_format(self, request): 
         return "application/json" 
@@ -19,5 +22,5 @@ class {{ resource.resource_name }}(tastypie.resources.ModelResource):
 
 api = tastypie.api.Api(api_name=settings.API_NAME)
 {% for resource in resources_map -%}
-api.register({{ resource.resource_name }}())
+api.register({{ resource.resource_class }}())
 {% endfor -%}
