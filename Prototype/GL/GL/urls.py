@@ -2,15 +2,15 @@ from django.contrib   import admin
 from django.conf.urls import patterns, include, url
 
 import settings
-import gestion.api
+import gestion.api.res
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$'                        , 'gestion.views.index'),
-    url(r'^api/'                     , include(gestion.api.resources.api.urls)),
+    url(r'^api/'                     , include(gestion.api.res.api.urls)),
     url(r'^admin/products/report/$'  , 'gestion.administration.admin_views.product_chart_view'),
-    url(r'^tastytools/'              , include('tastytools.urls'), {'api_name': gestion.api.resources.api.api_name}),
+    url(r'^tastytools/'              , include('tastytools.urls'), {'api_name': gestion.api.res.api.api_name}),
     url(r'^admin/components/report/$', 'gestion.administration.admin_views.component_report'),
     url(r'^admin/'                   , include(admin.site.urls                             )),
     url(r'^admin_tools/'             , include('admin_tools.urls'                          )),
