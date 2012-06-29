@@ -7,10 +7,10 @@ import {{ models_module }}
 {% for resource in resources_map -%}
 class {{ resource.resource_class }}(tastypie.resources.ModelResource):
     {% for field in resource.fk_model_fields -%}
-    {{ field.field }} = tastypie.fields.ForeignKey('{{ api_module }}.{{ field.mapped_resource }}', '{{ field.field }}', full={{ resource.full_reverse }})
+    {{ field.field }} = tastypie.fields.ForeignKey('{{ api_module }}.resources.{{ field.mapped_resource }}', '{{ field.field }}', full={{ resource.full_reverse }})
     {% endfor -%}
     {% for field in resource.mm_model_fields -%}
-    {{ field.field }} = tastypie.fields.ToManyField('{{ api_module }}.{{ field.mapped_resource }}', '{{ field.field }}', full={{ resource.full_reverse }})
+    {{ field.field }} = tastypie.fields.ToManyField('{{ api_module }}.resources.{{ field.mapped_resource }}', '{{ field.field }}', full={{ resource.full_reverse }})
     {% endfor -%}
     def determine_format(self, request):
         return "application/json"

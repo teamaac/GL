@@ -1,8 +1,8 @@
-from settings              import MEDIA_URL
 from django.contrib        import admin
 from django.conf.urls      import patterns, include, url
 from gestion.api.resources import resources_api
 
+import settings
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -14,5 +14,5 @@ urlpatterns = patterns('',
     url(r'^admin/'                   , include(admin.site.urls                             )),
     url(r'^admin_tools/'             , include('admin_tools.urls'                          )),
     #This is specific to the debug server, another configuration is necessary for apache (and removing this of course)
-    url(r'^media/(?P<path>.*)$'      , 'django.views.static.serve', {'document_root': MEDIA_ROOT, 'show_indexes':True}),
+    url(r'^media/(?P<path>.*)$'      , 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT, 'show_indexes':True}),
 )
