@@ -1,31 +1,109 @@
-import sys
-import inspect
 import tastypie
 import settings
-import collections
 import tastypie.api
-import gestion.tools
 import tastypie.resources
+import gestion.models
 
-def create_resources(models_module=settings.MODELS_MODULE):
-    result         = collections.namedtuple('result'      , ['models_module', 'resources_map'                ])
-    model_fields   = collections.namedtuple('model_fields', ['fk_field'     , 'mapped_resource'              ])
-    resources_map  = collections.namedtuple('resource_map', ['resource_name', 'model_fields'   , 'model_name'])
-    res = result(models_module = models_module.__name__, resources_map = [])
-    for model in gestion.tools.nonabstract_models(models_module):
-        tmp_resource_fields = []
-        for field in gestion.tools.foreignkey_fields(model[1]):
-            tmp_resource_fields.append(model_fields(
-                fk_field        = field[0],
-                mapped_resource = field[1].__name__+'Resource'))
-        res.resources_map.append(resources_map(
-            model_name    = model[1].__name__,
-            resource_name = model[1].__name__+'Resource',
-            model_fields  = tmp_resource_fields))
-    return res
+class ClientResource(tastypie.resources.ModelResource):
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.Client.objects.all()
+        resource_name = 'client'
 
-def register_resources(api_name, resources_map, resources_module=settings.RESOURCES_MODULE):
-    api = tastypie.api.Api(api_name=api_name)
-    for resource in resources_map:
-        api.register(resource[0]())
-    return api
+class ComposantResource(tastypie.resources.ModelResource):
+    type_composant = tastypie.fields.ForeignKey('gestion.api.TypeComposantResource', 'type_composant', full=True)
+    versions = tastypie.fields.ToManyField('gestion.api.VersionLogicielResource', 'versions', full=True)
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.Composant.objects.all()
+        resource_name = 'composant'
+
+class ComposantVersionResource(tastypie.resources.ModelResource):
+    composant = tastypie.fields.ForeignKey('gestion.api.ComposantResource', 'composant', full=True)
+    licence = tastypie.fields.ForeignKey('gestion.api.LicenceResource', 'licence', full=True)
+    nature = tastypie.fields.ForeignKey('gestion.api.NatureResource', 'nature', full=True)
+    version = tastypie.fields.ForeignKey('gestion.api.VersionLogicielResource', 'version', full=True)
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.ComposantVersion.objects.all()
+        resource_name = 'composantversion'
+
+class EtatResource(tastypie.resources.ModelResource):
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.Etat.objects.all()
+        resource_name = 'etat'
+
+class LicenceResource(tastypie.resources.ModelResource):
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.Licence.objects.all()
+        resource_name = 'licence'
+
+class NatureResource(tastypie.resources.ModelResource):
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.Nature.objects.all()
+        resource_name = 'nature'
+
+class ProduitResource(tastypie.resources.ModelResource):
+    versions = tastypie.fields.ToManyField('gestion.api.VersionLogicielResource', 'versions', full=True)
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.Produit.objects.all()
+        resource_name = 'produit'
+
+class ProduitVersionResource(tastypie.resources.ModelResource):
+    client = tastypie.fields.ForeignKey('gestion.api.ClientResource', 'client', full=True)
+    etat = tastypie.fields.ForeignKey('gestion.api.EtatResource', 'etat', full=True)
+    produit = tastypie.fields.ForeignKey('gestion.api.ProduitResource', 'produit', full=True)
+    version = tastypie.fields.ForeignKey('gestion.api.VersionLogicielResource', 'version', full=True)
+    composants = tastypie.fields.ToManyField('gestion.api.ComposantVersionResource', 'composants', full=True)
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.ProduitVersion.objects.all()
+        resource_name = 'produitversion'
+
+class ProduitVersionComposantVersionResource(tastypie.resources.ModelResource):
+    composant_version = tastypie.fields.ForeignKey('gestion.api.ComposantVersionResource', 'composant_version', full=True)
+    produit_version = tastypie.fields.ForeignKey('gestion.api.ProduitVersionResource', 'produit_version', full=True)
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.ProduitVersionComposantVersion.objects.all()
+        resource_name = 'produitversioncomposantversion'
+
+class TypeComposantResource(tastypie.resources.ModelResource):
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.TypeComposant.objects.all()
+        resource_name = 'typecomposant'
+
+class VersionLogicielResource(tastypie.resources.ModelResource):
+    def determine_format(self, request):
+        return "application/json"
+    class Meta:
+        queryset      = gestion.models.VersionLogiciel.objects.all()
+        resource_name = 'versionlogiciel'
+
+resources_api = tastypie.api.Api(api_name=settings.API_NAME)
+resources_api.register(ClientResource())
+resources_api.register(ComposantResource())
+resources_api.register(ComposantVersionResource())
+resources_api.register(EtatResource())
+resources_api.register(LicenceResource())
+resources_api.register(NatureResource())
+resources_api.register(ProduitResource())
+resources_api.register(ProduitVersionResource())
+resources_api.register(ProduitVersionComposantVersionResource())
+resources_api.register(TypeComposantResource())
+resources_api.register(VersionLogicielResource())
