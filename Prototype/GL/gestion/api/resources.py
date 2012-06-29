@@ -12,8 +12,8 @@ class ClientResource(tastypie.resources.ModelResource):
         resource_name = 'client'
 
 class ComposantResource(tastypie.resources.ModelResource):
-    type_composant = tastypie.fields.ForeignKey('gestion.api.TypeComposantResource', 'type_composant', full=True)
-    versions = tastypie.fields.ToManyField('gestion.api.VersionLogicielResource', 'versions', full=True)
+    type_composant = tastypie.fields.ForeignKey('gestion.api.resources.TypeComposantResource', 'type_composant', full=True)
+    versions = tastypie.fields.ToManyField('gestion.api.resources.VersionLogicielResource', 'versions', full=True)
     def determine_format(self, request):
         return "application/json"
     class Meta:
@@ -21,10 +21,10 @@ class ComposantResource(tastypie.resources.ModelResource):
         resource_name = 'composant'
 
 class ComposantVersionResource(tastypie.resources.ModelResource):
-    composant = tastypie.fields.ForeignKey('gestion.api.ComposantResource', 'composant', full=True)
-    licence = tastypie.fields.ForeignKey('gestion.api.LicenceResource', 'licence', full=True)
-    nature = tastypie.fields.ForeignKey('gestion.api.NatureResource', 'nature', full=True)
-    version = tastypie.fields.ForeignKey('gestion.api.VersionLogicielResource', 'version', full=True)
+    composant = tastypie.fields.ForeignKey('gestion.api.resources.ComposantResource', 'composant', full=True)
+    licence = tastypie.fields.ForeignKey('gestion.api.resources.LicenceResource', 'licence', full=True)
+    nature = tastypie.fields.ForeignKey('gestion.api.resources.NatureResource', 'nature', full=True)
+    version = tastypie.fields.ForeignKey('gestion.api.resources.VersionLogicielResource', 'version', full=True)
     def determine_format(self, request):
         return "application/json"
     class Meta:
@@ -53,7 +53,7 @@ class NatureResource(tastypie.resources.ModelResource):
         resource_name = 'nature'
 
 class ProduitResource(tastypie.resources.ModelResource):
-    versions = tastypie.fields.ToManyField('gestion.api.VersionLogicielResource', 'versions', full=True)
+    versions = tastypie.fields.ToManyField('gestion.api.resources.VersionLogicielResource', 'versions', full=True)
     def determine_format(self, request):
         return "application/json"
     class Meta:
@@ -61,11 +61,11 @@ class ProduitResource(tastypie.resources.ModelResource):
         resource_name = 'produit'
 
 class ProduitVersionResource(tastypie.resources.ModelResource):
-    client = tastypie.fields.ForeignKey('gestion.api.ClientResource', 'client', full=True)
-    etat = tastypie.fields.ForeignKey('gestion.api.EtatResource', 'etat', full=True)
-    produit = tastypie.fields.ForeignKey('gestion.api.ProduitResource', 'produit', full=True)
-    version = tastypie.fields.ForeignKey('gestion.api.VersionLogicielResource', 'version', full=True)
-    composants = tastypie.fields.ToManyField('gestion.api.ComposantVersionResource', 'composants', full=True)
+    client = tastypie.fields.ForeignKey('gestion.api.resources.ClientResource', 'client', full=True)
+    etat = tastypie.fields.ForeignKey('gestion.api.resources.EtatResource', 'etat', full=True)
+    produit = tastypie.fields.ForeignKey('gestion.api.resources.ProduitResource', 'produit', full=True)
+    version = tastypie.fields.ForeignKey('gestion.api.resources.VersionLogicielResource', 'version', full=True)
+    composants = tastypie.fields.ToManyField('gestion.api.resources.ComposantVersionResource', 'composants', full=True)
     def determine_format(self, request):
         return "application/json"
     class Meta:
@@ -73,8 +73,8 @@ class ProduitVersionResource(tastypie.resources.ModelResource):
         resource_name = 'produitversion'
 
 class ProduitVersionComposantVersionResource(tastypie.resources.ModelResource):
-    composant_version = tastypie.fields.ForeignKey('gestion.api.ComposantVersionResource', 'composant_version', full=True)
-    produit_version = tastypie.fields.ForeignKey('gestion.api.ProduitVersionResource', 'produit_version', full=True)
+    composant_version = tastypie.fields.ForeignKey('gestion.api.resources.ComposantVersionResource', 'composant_version', full=True)
+    produit_version = tastypie.fields.ForeignKey('gestion.api.resources.ProduitVersionResource', 'produit_version', full=True)
     def determine_format(self, request):
         return "application/json"
     class Meta:
